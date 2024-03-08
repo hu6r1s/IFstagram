@@ -1,8 +1,8 @@
-name: Java CI with Gradle
+name: Java CI/CD with Gradle
 
 on:
-  pull_request:
-    branches: [ "dev" ]
+  push:
+    branches: [ "main" ]
 
 jobs:
   test:
@@ -25,4 +25,4 @@ jobs:
       run: chmod +x ./gradlew
       
     - name: Test with Gradle Wrapper
-      run: ./gradlew clean test -i
+      run: ./gradlew clean test
