@@ -68,15 +68,6 @@
 *********************
 https://www.notion.so/teamsparta/76f44485835b4ffaa408fc3584caf70b?v=b9cd5890b50c4666b3be304b9d77b30d&pvs=4
 
-### 📐 와이어프레임
-
-****************
-<div align="center">
-    <img src="https://file.notion.so/f/f/83c75a39-3aba-4ba4-a792-7aefe4b07895/c42638a9-1e55-4111-9633-c8a2b87e5d15/1.png?id=7852787a-d9e0-4134-af96-dff775747d0f&table=block&spaceId=83c75a39-3aba-4ba4-a792-7aefe4b07895&expirationTimestamp=1709258400000&signature=o9C4McBWMN4twSzCcKHmLy-Mkp9PZnGSb_0T9FGQXZg&downloadName=1.png"  width="80%" alt="">
-    <img src="https://file.notion.so/f/f/83c75a39-3aba-4ba4-a792-7aefe4b07895/497dd705-4377-406d-a57d-da1ebd9ac3f4/2.png?id=365900e5-9271-46c0-8b0b-c10cedece673&table=block&spaceId=83c75a39-3aba-4ba4-a792-7aefe4b07895&expirationTimestamp=1709258400000&signature=YDEwHdPbzpIdNfYnyoocF3xdrAgs56DogrN3spufomw&downloadName=2.png"  width="80%" alt="">
-    <img src="https://file.notion.so/f/f/83c75a39-3aba-4ba4-a792-7aefe4b07895/ee6339aa-713f-4f8d-9f1c-427f17a3e0a7/Untitled.png?id=aea22fcb-f836-4352-8e0e-8a3c8ec38e7f&table=block&spaceId=83c75a39-3aba-4ba4-a792-7aefe4b07895&expirationTimestamp=1709258400000&signature=_h-jC6UQDzwzYGpsKxZJdMwitA8S6P344jO1YUpFOSI&downloadName=Untitled.png"  width="80%">
-</div>
-
 ### 🗂️ ERD DIAGRAM
 
 *****************
@@ -84,3 +75,7 @@ https://www.notion.so/teamsparta/76f44485835b4ffaa408fc3584caf70b?v=b9cd5890b50c
     <img src="https://github.com/nbcamp-if/ifstagram/assets/61917664/57aecef5-83b5-4675-b81b-250922a4c328"  width="80%">
 </div>
 
+### 추가 개선 사항
+- [ ] 이전 코드 수정사항 적용
+- [ ] 이미지 업로드 S3 활용
+- [ ] Refresh Token Redis 사용
