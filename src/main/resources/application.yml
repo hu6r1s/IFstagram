@@ -2,3 +2,10 @@ spring:
   profiles:
     active:
       - dev
+    include:
+      - oauth2
+  config:
+    import:
+      - admin.properties
+      - db.properties
+      - jwt.properties
