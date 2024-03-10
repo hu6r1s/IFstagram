@@ -81,4 +81,4 @@ https://www.notion.so/teamsparta/76f44485835b4ffaa408fc3584caf70b?v=b9cd5890b50c
 - [ ] 이전 코드 수정사항 적용
 - [ ] 이미지 업로드 S3 활용
 - [ ] Refresh Token Redis 사용
-- [ ] CD 자동 배포 적용
+- [ ] CD 자동 배포 적용 - 이틀 동안 시도했는데 실패..
