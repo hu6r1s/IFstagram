@@ -36,14 +36,14 @@ public class PostService {
 
   @Transactional
   public void createPost(
-      PostRequestDto requestDto, MultipartFile image, User user) throws Exception {
+    PostRequestDto requestDto, MultipartFile image, User user) throws Exception {
     Post post = new Post(requestDto, user.getUserId());
     postRepository.save(post);
 
     postImageService.createImage(image, post);
   }
 
-//  @Transactional(readOnly = true)
+  //  @Transactional(readOnly = true)
   public List<PostResponseDto> getPostList() {
     return postRepository.findAll().stream().map(post -> {
         String imageUrl;
@@ -57,7 +57,7 @@ public class PostService {
       .toList();
   }
 
-//  @Transactional(readOnly = true)
+  //  @Transactional(readOnly = true)
   public PostResponseDto getPost(Long postId) throws MalformedURLException {
     Post post = findPost(postId);
     PostResponseDto responseDto = new PostResponseDto(
@@ -84,11 +84,9 @@ public class PostService {
     post.delete();
   }
 
-  private Post findPost(Long postId) {
+  public Post findPost(Long postId) {
     return postRepository.findById(postId).orElseThrow(()
-        -> new IllegalCallerException("일치하는 게시글이 없습니다."));
-
-    // todo: 사진을 삭제해도 url이 남아 있고 db를 삭제해도 사진이 남아 있음
+      -> new IllegalCallerException("일치하는 게시글이 없습니다."));
   }
 
   public List<PostResponseDto> followPost(User user) {

@@ -8,7 +8,6 @@ import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 
-@Setter
 @Getter
 public class CommentResponseDto {
     private Long postId;
@@ -16,15 +15,16 @@ public class CommentResponseDto {
     private LocalDateTime createDate;
     private LocalDateTime modifiedDate;
     private LocalDateTime deletedDate;
-    private Long username;
+    private Long userId;
     private String content;
-    private List<CommentResponseDto> replyList = new ArrayList<>();
+    private Long parentCommentId;
 
     public CommentResponseDto(Comment comment) {
         this.postId = comment.getPostId();
         this.commentId = comment.getId();
-        this.username = comment.getUserId();
+        this.userId = comment.getUserId();
         this.content = comment.getContent();
+        this.parentCommentId = comment.getParentCommentId();
         this.createDate = comment.getCreatedAt();
         this.modifiedDate = comment.getModifiedAt();
         this.deletedDate = comment.getDeletedAt();
