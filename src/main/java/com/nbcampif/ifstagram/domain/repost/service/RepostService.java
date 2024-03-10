@@ -24,14 +24,7 @@ public class RepostService {
     Post post = postRepository.findById(postId).orElseThrow(()
         -> new IllegalCallerException("일치하는 게시글이 없습니다."));
 
-    Post savePost = new Post(post, user.getUserId());
-
-    // 원본 게시글 새롭게 저장
-    Post savePostInfo = postRepository.save(savePost);
-
-    // 원본 게시글을 새롭게 저장 repost id를 가져온 post id로 저장
-
-    Repost repost = new Repost(savePostInfo, user);
+    Repost repost = new Repost(postId, user);
 
     repostRepository.save(repost);
   }
