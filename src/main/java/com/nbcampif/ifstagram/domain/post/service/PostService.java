@@ -8,6 +8,7 @@ import com.nbcampif.ifstagram.domain.post.repository.PostRepository;
 import com.nbcampif.ifstagram.domain.user.model.User;
 import com.nbcampif.ifstagram.domain.user.repository.FollowRepository;
 import com.nbcampif.ifstagram.domain.user.repository.UserRepository;
+import com.nbcampif.ifstagram.global.exception.PermissionNotException;
 import com.nbcampif.ifstagram.global.response.CommonResponse;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -30,7 +31,6 @@ import org.springframework.web.multipart.MultipartFile;
 public class PostService {
 
   private final PostRepository postRepository;
-  private final UserRepository userRepository;
   private final PostImageService postImageService;
   private final FollowRepository followRepository;
 
@@ -43,7 +43,6 @@ public class PostService {
     postImageService.createImage(image, post);
   }
 
-  //  @Transactional(readOnly = true)
   public List<PostResponseDto> getPostList() {
     return postRepository.findAll().stream().map(post -> {
         String imageUrl;
@@ -57,7 +56,6 @@ public class PostService {
       .toList();
   }
 
-  //  @Transactional(readOnly = true)
   public PostResponseDto getPost(Long postId) throws MalformedURLException {
     Post post = findPost(postId);
     PostResponseDto responseDto = new PostResponseDto(
@@ -68,18 +66,24 @@ public class PostService {
   }
 
   @Transactional
-  public void updatePost(Long postId, PostRequestDto requestDto, MultipartFile image)
+  public void updatePost(Long postId, PostRequestDto requestDto, MultipartFile image, User user)
     throws IOException {
 
     Post post = findPost(postId);
+    if (!post.getUserId().equals(user.getUserId())) {
+      throw new IllegalArgumentException("작성자만 수정할 수 있습니다.");
+    }
     postImageService.updateImage(post, image);
 
     post.updatePost(requestDto);
   }
 
   @Transactional
-  public void deletePost(Long postId) {
+  public void deletePost(Long postId, User user) {
     Post post = findPost(postId);
+    if (!post.getUserId().equals(user.getUserId())) {
+      throw new IllegalArgumentException("작성자만 삭제할 수 있습니다.");
+    }
 
     post.delete();
   }
