@@ -85,9 +85,10 @@ public class CommentController {
   @Operation(summary = "댓글 삭제", description = "댓글 삭제")
   @DeleteMapping("{commentId}")
   public ResponseEntity<CommonResponse<Void>> deleteComment(
-    @PathVariable Long commentId
+    @PathVariable Long commentId,
+    @AuthenticationPrincipal User user
   ) {
-    commentService.deleteComment(commentId);
+    commentService.deleteComment(commentId, user);
     return ResponseEntity.status(HttpStatus.OK)
       .body(CommonResponse.<Void>builder()
         .message("댓글이 삭제되었습니다.")

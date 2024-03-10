@@ -4,15 +4,10 @@ import com.nbcampif.ifstagram.domain.comment.dto.CommentRequestDto;
 import com.nbcampif.ifstagram.domain.comment.dto.CommentResponseDto;
 import com.nbcampif.ifstagram.domain.comment.entity.Comment;
 import com.nbcampif.ifstagram.domain.comment.repository.CommentRepository;
-import com.nbcampif.ifstagram.domain.post.entity.Post;
 import com.nbcampif.ifstagram.domain.post.service.PostService;
 import com.nbcampif.ifstagram.domain.user.model.User;
-import com.nbcampif.ifstagram.global.exception.NotFoundUserException;
-import com.nbcampif.ifstagram.global.response.CommonResponse;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -51,14 +46,17 @@ public class CommentService {
   public void updateComment(CommentRequestDto requestDto, Long commentId, Long postId, User user) {
     Comment comment = findComment(commentId);
     if (!comment.getUserId().equals(user.getUserId())) {
-      throw new NotFoundUserException("자신이 작성한 댓글만 수정할 수 있습니다.");
+      throw new IllegalArgumentException("자신이 작성한 댓글만 수정할 수 있습니다.");
     }
     comment.update(requestDto.getContent());
   }
 
   @Transactional
-  public void deleteComment(Long commentId) {
+  public void deleteComment(Long commentId, User user) {
     Comment comment = findComment(commentId);
+    if (!comment.getUserId().equals(user.getUserId())) {
+      throw new IllegalArgumentException("자신이 작성한 댓글만 수정할 수 있습니다.");
+    }
     comment.delete();
   }
 
