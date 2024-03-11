@@ -7,7 +7,6 @@ import com.nbcampif.ifstagram.domain.post.dto.PostRequestDto;
 import com.nbcampif.ifstagram.domain.post.dto.PostResponseDto;
 import com.nbcampif.ifstagram.domain.user.dto.ReportReponseDto;
 import com.nbcampif.ifstagram.domain.user.dto.UserResponseDto;
-import com.nbcampif.ifstagram.domain.user.dto.UserUpdateRequestDto;
 import com.nbcampif.ifstagram.domain.user.model.User;
 import com.nbcampif.ifstagram.global.response.CommonResponse;
 import io.swagger.v3.oas.annotations.Operation;

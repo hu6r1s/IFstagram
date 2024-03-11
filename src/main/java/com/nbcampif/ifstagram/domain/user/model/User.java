@@ -16,14 +16,17 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 @AllArgsConstructor
 public class User implements OAuth2User {
 
-  Long userId;
-  String email;
-  String nickname;
-  String password;
-  String profileImage;
-  String introduction = "";
-  Long reportedCount = 0L;
-  UserRole role = UserRole.USER;
+  private Long userId;
+  private String email;
+  private String nickname;
+  private String password;
+  private String profileImage;
+  @Builder.Default
+  private String introduction = "";
+  @Builder.Default
+  private Long reportedCount = 0L;
+  @Builder.Default
+  private UserRole role = UserRole.USER;
 
   private static final String DEFAULT_PROFILE_IMAGE = "https://k.kakaocdn.net/dn/1G9kp/btsAot8liOn/8CWudi3uy07rvFNUkk3ER0/img_640x640.jpg";
 

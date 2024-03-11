@@ -1,5 +1,5 @@
 package com.nbcampif.ifstagram.domain.user.controller;
-import org.springframework.web.bind.annotation.RestController;
+
 import com.nbcampif.ifstagram.domain.user.dto.UserResponseDto;
 import com.nbcampif.ifstagram.domain.user.dto.UserUpdateRequestDto;
 import com.nbcampif.ifstagram.domain.user.model.User;
