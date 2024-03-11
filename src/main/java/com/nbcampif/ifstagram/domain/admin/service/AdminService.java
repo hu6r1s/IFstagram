@@ -20,4 +20,6 @@ public interface AdminService {
   void updatePost(Long postId, PostRequestDto requestDto, MultipartFile image) throws IOException;
   void deletePost(Long postId);
   List<PostResponseDto> getDeletedPost();
+
+  List<UserResponseDto> getEvent();
 }

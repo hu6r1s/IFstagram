@@ -2,6 +2,8 @@ package com.nbcampif.ifstagram.domain.admin.service;
 
 import com.nbcampif.ifstagram.domain.admin.dto.LoginRequestDto;
 import com.nbcampif.ifstagram.domain.admin.dto.UserForceUpdateRequestDto;
+import com.nbcampif.ifstagram.domain.admin.entity.ApiUseTime;
+import com.nbcampif.ifstagram.domain.admin.repository.ApiUseTimeRepository;
 import com.nbcampif.ifstagram.domain.image.service.PostImageService;
 import com.nbcampif.ifstagram.domain.post.dto.PostRequestDto;
 import com.nbcampif.ifstagram.domain.post.dto.PostResponseDto;
@@ -21,6 +23,7 @@ import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -36,6 +39,7 @@ public class AdminServiceImpl implements AdminService{
 
   private final UserRepository userRepository;
   private final PostRepository postRepository;
+  private final ApiUseTimeRepository apiUseTimeRepository;
   private final JwtTokenProvider jwtTokenProvider;
   private final PostImageService postImageService;
   private final ReportRepository reportRepository;
@@ -136,6 +140,24 @@ public class AdminServiceImpl implements AdminService{
           return new PostResponseDto(e, imageUrl);
         })
         .toList();
+  }
+
+  @Override
+  public List<UserResponseDto> getEvent() {
+    List<UserResponseDto> responseList = new ArrayList<>();
+    List<ApiUseTime> userList = apiUseTimeRepository.findUserIdByOrderByTotalTimeDesc();
+    for (ApiUseTime apiUseTime : userList) {
+      User user = userRepository.findUserOrElseThrow(apiUseTime.getUserId());
+      responseList.add(new UserResponseDto(
+        user.getEmail(),
+        user.getIntroduction(),
+        user.getNickname(),
+        user.getProfileImage(),
+        user.getReportedCount()
+        )
+      );
+    }
+    return responseList;
   }
 
 }

@@ -135,4 +135,16 @@ public class AdminController {
         .build()
     );
   }
+
+  @Operation(summary = "이벤트 조회", description = "좋아요, 팔로우를 많이 사용한 유저들을 조회할 수 있는 API")
+  @GetMapping("/event")
+  public ResponseEntity<CommonResponse<List<UserResponseDto>>> getEvent() {
+    List<UserResponseDto> responseList = adminService.getEvent();
+    return ResponseEntity.status(HttpStatus.OK.value()).body(
+      CommonResponse.<List<UserResponseDto>>builder()
+        .message("이벤트 조회")
+        .data(responseList)
+        .build()
+    );
+  }
 }
