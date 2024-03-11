@@ -3,6 +3,7 @@ package com.nbcampif.ifstagram.domain.admin.service;
 import com.nbcampif.ifstagram.domain.admin.dto.LoginRequestDto;
 import com.nbcampif.ifstagram.domain.admin.dto.UserForceUpdateRequestDto;
 import com.nbcampif.ifstagram.domain.admin.entity.ApiUseTime;
+import com.nbcampif.ifstagram.domain.admin.repository.ApiUseTimeQuery;
 import com.nbcampif.ifstagram.domain.admin.repository.ApiUseTimeRepository;
 import com.nbcampif.ifstagram.domain.image.service.PostImageService;
 import com.nbcampif.ifstagram.domain.post.dto.PostRequestDto;
@@ -40,6 +41,7 @@ public class AdminServiceImpl implements AdminService{
   private final UserRepository userRepository;
   private final PostRepository postRepository;
   private final ApiUseTimeRepository apiUseTimeRepository;
+  private final ApiUseTimeQuery apiUseTimeQuery;
   private final JwtTokenProvider jwtTokenProvider;
   private final PostImageService postImageService;
   private final ReportRepository reportRepository;
@@ -145,17 +147,15 @@ public class AdminServiceImpl implements AdminService{
   @Override
   public List<UserResponseDto> getEvent() {
     List<UserResponseDto> responseList = new ArrayList<>();
-    List<ApiUseTime> userList = apiUseTimeRepository.findUserIdByOrderByTotalTimeDesc();
-    for (ApiUseTime apiUseTime : userList) {
-      User user = userRepository.findUserOrElseThrow(apiUseTime.getUserId());
+    List<User> userList = apiUseTimeQuery.getEvent();
+    for (User user : userList) {
       responseList.add(new UserResponseDto(
         user.getEmail(),
         user.getIntroduction(),
         user.getNickname(),
         user.getProfileImage(),
         user.getReportedCount()
-        )
-      );
+      ));
     }
     return responseList;
   }
