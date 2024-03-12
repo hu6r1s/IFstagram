@@ -10,6 +10,4 @@ public interface ApiUseTimeRepository extends JpaRepository<ApiUseTime, Long> {
 
   Optional<ApiUseTime> findByUserId(Long userId);
 
-  List<ApiUseTime> findUserIdByOrderByTotalTimeDesc();
-
 }
