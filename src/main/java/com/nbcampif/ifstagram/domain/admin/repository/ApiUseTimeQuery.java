@@ -23,6 +23,7 @@ public class ApiUseTimeQuery {
       .join(time)
       .on(user.userId.eq(time.userId))
       .orderBy(time.totalTime.desc())
+      .limit(3)
       .fetch();
     return result.stream().map(userEntity -> userEntity.toModel()).toList();
   }
