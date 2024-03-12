@@ -6,6 +6,7 @@ import com.nbcampif.ifstagram.domain.post.entity.Post;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,9 +33,11 @@ public class PostImageService {
 
 
   public String getImage(Long id) throws MalformedURLException {
-    PostImage image = postImageRepository.findById(id)
-      .orElseThrow(() -> new IllegalArgumentException("게시물 이미지가 존재하지 않습니다"));
-    return image.getFilePath();
+    Optional<PostImage> image = postImageRepository.findById(id);
+    if (!image.isPresent()) {
+      return "";
+    }
+    return image.get().getFilePath();
   }
 
   @Transactional
