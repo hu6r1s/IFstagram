@@ -30,6 +30,9 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -130,8 +133,10 @@ public class AdminServiceImpl implements AdminService{
   }
 
   @Override
-  public List<PostResponseDto> getDeletedPost() {
-    return postRepository.findAllByDeletedAtIsNotNullOrderByDeletedAtDesc()
+  public List<PostResponseDto> getDeletedPost(int page, int size, String sortBy) {
+    Pageable pageable = PageRequest.of(page-1, size, Sort.by(sortBy).descending());
+
+    return postRepository.findAllByDeletedAtIsNotNullOrderByDeletedAtDesc(pageable)
         .stream().map(e -> {
           String imageUrl;
           try {

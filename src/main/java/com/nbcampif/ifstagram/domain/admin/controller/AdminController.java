@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -126,8 +127,12 @@ public class AdminController {
 
   @Operation(summary = "삭제된 게시글 조회", description = "관리자가 삭제된 게시글을 조회할 수 있는 API")
   @GetMapping("/posts/deleted")
-  public ResponseEntity<CommonResponse<List<PostResponseDto>>> getDeletedPost() {
-    List<PostResponseDto> responseList = adminService.getDeletedPost();
+  public ResponseEntity<CommonResponse<List<PostResponseDto>>> getDeletedPost(
+    @RequestParam(required = false) int page,
+    @RequestParam(required = false) int size,
+    @RequestParam(required = false) String sortBy
+  ) {
+    List<PostResponseDto> responseList = adminService.getDeletedPost(page, size, sortBy);
     return ResponseEntity.status(HttpStatus.OK.value()).body(
       CommonResponse.<List<PostResponseDto>>builder()
         .message("삭제된 게시글 조회")

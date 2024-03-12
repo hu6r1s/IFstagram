@@ -19,7 +19,7 @@ public interface AdminService {
   void updateUser(Long userId, UserForceUpdateRequestDto requestDto);
   void updatePost(Long postId, PostRequestDto requestDto, MultipartFile image) throws IOException;
   void deletePost(Long postId);
-  List<PostResponseDto> getDeletedPost();
+  List<PostResponseDto> getDeletedPost(int page, int size, String sortBy);
 
   List<UserResponseDto> getEvent();
 }
