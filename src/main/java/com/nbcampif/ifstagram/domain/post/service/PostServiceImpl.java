@@ -5,6 +5,7 @@ import com.nbcampif.ifstagram.domain.post.dto.PostRequestDto;
 import com.nbcampif.ifstagram.domain.post.dto.PostResponseDto;
 import com.nbcampif.ifstagram.domain.post.entity.Post;
 import com.nbcampif.ifstagram.domain.post.repository.PostRepository;
+import com.nbcampif.ifstagram.domain.post.repository.PostRepositoryQuery;
 import com.nbcampif.ifstagram.domain.user.model.User;
 import com.nbcampif.ifstagram.domain.user.repository.FollowRepository;
 import java.io.IOException;
@@ -23,6 +24,7 @@ public class PostServiceImpl implements PostService{
   private final PostRepository postRepository;
   private final PostImageService postImageService;
   private final FollowRepository followRepository;
+  private final PostRepositoryQuery postRepositoryQuery;
 
   @Override
   @Transactional
@@ -37,15 +39,27 @@ public class PostServiceImpl implements PostService{
   @Override
   public List<PostResponseDto> getPostList() {
     return postRepository.findAll().stream().map(post -> {
-        String imageUrl;
         try {
-          imageUrl = postImageService.getImage(post.getId());
-        } catch (MalformedURLException ex) {
-          throw new RuntimeException(ex);
+          return new PostResponseDto(post, postImageService.getImage(post.getId()));
+        } catch (MalformedURLException e) {
+          throw new RuntimeException(e);
         }
-        return new PostResponseDto(post, imageUrl);
       })
       .toList();
+  }
+
+  @Override
+  public List<PostResponseDto> getCondPostList(String title) {
+    return postRepositoryQuery.getCondPostList(title).stream().map(post -> {
+      String imageUrl;
+      try {
+        imageUrl = postImageService.getImage(post.getId());
+      } catch (MalformedURLException e) {
+        throw new RuntimeException(e);
+      }
+      return new PostResponseDto(post, imageUrl);
+    })
+    .toList();
   }
 
   @Override

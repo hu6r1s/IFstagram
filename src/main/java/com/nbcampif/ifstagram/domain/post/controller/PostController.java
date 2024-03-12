@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -47,6 +48,18 @@ public class PostController {
     return ResponseEntity.status(HttpStatus.OK.value()).body(
       CommonResponse.<List<PostResponseDto>>builder()
         .message("게시글 전체 조회 성공")
+        .data(responseDto)
+        .build());
+  }
+
+  @GetMapping("/search")
+  public ResponseEntity<CommonResponse<List<PostResponseDto>>> getCondPostList(
+    @RequestParam(name = "title") String title
+  ) {
+    List<PostResponseDto> responseDto = postService.getCondPostList(title);
+    return ResponseEntity.status(HttpStatus.OK.value()).body(
+      CommonResponse.<List<PostResponseDto>>builder()
+        .message("게시글 조건 조회 성공")
         .data(responseDto)
         .build());
   }

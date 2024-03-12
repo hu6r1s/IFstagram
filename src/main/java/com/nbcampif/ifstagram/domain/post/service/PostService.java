@@ -19,4 +19,6 @@ public interface PostService {
   void deletePost(Long postId, User user);
   Post findPost(Long postId);
   List<PostResponseDto> followPost(User user);
+
+  List<PostResponseDto> getCondPostList(String title);
 }
