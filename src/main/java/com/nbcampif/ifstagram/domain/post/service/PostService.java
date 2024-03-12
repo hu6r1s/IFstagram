@@ -12,7 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 public interface PostService {
 
   void createPost(PostRequestDto requestDto, MultipartFile image, User user) throws Exception;
-  List<PostResponseDto> getPostList();
+  List<PostResponseDto> getPostList(int page, int size, String sortBy);
   PostResponseDto getPost(Long postId) throws MalformedURLException;
   void updatePost(Long postId, PostRequestDto requestDto, MultipartFile image, User user)
     throws IOException;
@@ -20,5 +20,5 @@ public interface PostService {
   Post findPost(Long postId);
   List<PostResponseDto> followPost(User user);
 
-  List<PostResponseDto> getCondPostList(String title);
+  List<PostResponseDto> getCondPostList(String title, int page, int size, String sortBy);
 }

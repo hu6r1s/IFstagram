@@ -1,5 +1,7 @@
 package com.nbcampif.ifstagram.domain.post.service;
 
+import static java.util.stream.Collectors.toList;
+
 import com.nbcampif.ifstagram.domain.image.service.PostImageService;
 import com.nbcampif.ifstagram.domain.post.dto.PostRequestDto;
 import com.nbcampif.ifstagram.domain.post.dto.PostResponseDto;
@@ -13,6 +15,10 @@ import java.net.MalformedURLException;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -37,8 +43,9 @@ public class PostServiceImpl implements PostService{
   }
 
   @Override
-  public List<PostResponseDto> getPostList() {
-    return postRepository.findAll().stream().map(post -> {
+  public List<PostResponseDto> getPostList(int page, int size, String sortBy) {
+    Pageable pageable = PageRequest.of(page-1, size, Sort.by(sortBy).descending());
+    return postRepository.findAll(pageable).getContent().stream().map(post -> {
         try {
           return new PostResponseDto(post, postImageService.getImage(post.getId()));
         } catch (MalformedURLException e) {
@@ -49,8 +56,9 @@ public class PostServiceImpl implements PostService{
   }
 
   @Override
-  public List<PostResponseDto> getCondPostList(String title) {
-    return postRepositoryQuery.getCondPostList(title).stream().map(post -> {
+  public List<PostResponseDto> getCondPostList(String title, int page, int size, String sortBy) {
+    Pageable pageable = PageRequest.of(page-1, size, Sort.by(sortBy).descending());
+    return postRepositoryQuery.getCondPostList(title, pageable).getContent().stream().map(post -> {
       String imageUrl;
       try {
         imageUrl = postImageService.getImage(post.getId());
@@ -114,6 +122,6 @@ public class PostServiceImpl implements PostService{
           throw new RuntimeException(e);
         }
       })
-      .collect(Collectors.toList());
+      .collect(toList());
   }
 }

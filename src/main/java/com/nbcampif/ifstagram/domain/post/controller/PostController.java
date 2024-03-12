@@ -43,8 +43,12 @@ public class PostController {
   }
 
   @GetMapping
-  public ResponseEntity<CommonResponse<List<PostResponseDto>>> getPostList() {
-    List<PostResponseDto> responseDto = postService.getPostList();
+  public ResponseEntity<CommonResponse<List<PostResponseDto>>> getPostList(
+    @RequestParam(required = false) int page,
+    @RequestParam(required = false) int size,
+    @RequestParam(required = false) String sortBy
+  ) {
+    List<PostResponseDto> responseDto = postService.getPostList(page, size, sortBy);
     return ResponseEntity.status(HttpStatus.OK.value()).body(
       CommonResponse.<List<PostResponseDto>>builder()
         .message("게시글 전체 조회 성공")
@@ -54,9 +58,12 @@ public class PostController {
 
   @GetMapping("/search")
   public ResponseEntity<CommonResponse<List<PostResponseDto>>> getCondPostList(
-    @RequestParam(name = "title") String title
+    @RequestParam(name = "title") String title,
+    @RequestParam(required = false) int page,
+    @RequestParam(required = false) int size,
+    @RequestParam(required = false) String sortBy
   ) {
-    List<PostResponseDto> responseDto = postService.getCondPostList(title);
+    List<PostResponseDto> responseDto = postService.getCondPostList(title, page, size, sortBy);
     return ResponseEntity.status(HttpStatus.OK.value()).body(
       CommonResponse.<List<PostResponseDto>>builder()
         .message("게시글 조건 조회 성공")
