@@ -7,11 +7,10 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.redis.core.RedisHash;
 
 @Getter
-@NoArgsConstructor
-@Table(name = "refresh_tokens")
-@Entity
+@RedisHash
 public class RefreshTokenEntity {
 
   @Id

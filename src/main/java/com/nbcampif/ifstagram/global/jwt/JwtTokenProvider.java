@@ -28,10 +28,12 @@ import java.util.Arrays;
 import java.util.Base64;
 import java.util.Date;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 import javax.crypto.SecretKey;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -68,24 +70,21 @@ public class JwtTokenProvider {
     return generateToken(String.valueOf(id), role, ACCESS_TOKEN_VALID_TIME);
   }
 
-  @Transactional
   public String generateRefreshToken(
       Long userId, final String role
   ) {
-    String uuid = UUID.randomUUID().toString();
-    String token = generateToken(uuid, role, REFRESH_TOKEN_VALID_TIME);
+    String token = generateToken(String.valueOf(userId), role, REFRESH_TOKEN_VALID_TIME);
 
-    refreshTokenRepository.deleteTokenByUserId(userId);
-    refreshTokenRepository.saveToken(userId, substringToken(token));
+    refreshTokenRepository.save(String.valueOf(userId), token);
 
     return token;
   }
 
-  @Transactional
   public String reGenerateAccessToken(String expiredToken) {
     log.info("[Re-generate access token]");
     User user = getUserFromToken(expiredToken);
-    String refreshToken = refreshTokenRepository.findTokenByUserIdOrElseThrow(user.getUserId());
+
+    String refreshToken = refreshTokenRepository.findById(String.valueOf(user.getUserId()));
     TokenState state = checkTokenState(refreshToken);
 
     if (state.equals(INVALID)) {
@@ -94,7 +93,7 @@ public class JwtTokenProvider {
     }
     if (state.equals(EXPIRED)) {
       log.info("[Refresh token expired] {}", refreshToken);
-      refreshTokenRepository.deleteToken(refreshToken);
+      refreshTokenRepository.deleteToken(user.getUserId());
       throw new JwtException("Expired Token");
     }
 
@@ -196,7 +195,7 @@ public class JwtTokenProvider {
   public void expireToken(
       final Long userId
   ) {
-    refreshTokenRepository.deleteTokenByUserId(userId);
+    refreshTokenRepository.deleteToken(userId);
   }
 
 }

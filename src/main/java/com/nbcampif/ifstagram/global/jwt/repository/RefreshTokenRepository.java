@@ -1,39 +1,42 @@
 package com.nbcampif.ifstagram.global.jwt.repository;
 
 import com.nbcampif.ifstagram.global.jwt.RefreshTokenEntity;
+import jakarta.annotation.Resource;
 import jakarta.persistence.EntityNotFoundException;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Repository;
 
 @Repository
 @RequiredArgsConstructor
 public class RefreshTokenRepository {
 
-  private final RefreshTokenJpaRepository refreshTokenJpaRepository;
+  private final RedisTemplate redisTemplate;
 
-  public void saveToken(Long memberId, String refreshToken) {
-    RefreshTokenEntity entity = RefreshTokenEntity.of(memberId, refreshToken);
-    refreshTokenJpaRepository.save(entity);
+  @Resource(name = "redisTemplate")
+  private ValueOperations<String, String> valueOperations;
+
+
+  public void deleteToken(Long userId) {
+    redisTemplate.delete(userId);
   }
 
-  public String findTokenByUserIdOrElseThrow(Long userId) {
-    return refreshTokenJpaRepository.findByUserId(userId)
-        .map(RefreshTokenEntity::getToken)
-        .orElseThrow(() -> new EntityNotFoundException("RefreshTokenEntity not found"));
+  public void save(String userId, String refreshToken) {
+    valueOperations.set(userId, refreshToken);
+    redisTemplate.expire(userId, 7L, TimeUnit.DAYS);
   }
 
-  public Long findUserIdByTokenOrElseThrow(String refreshToken) {
-    return refreshTokenJpaRepository.findByToken(refreshToken)
-        .map(RefreshTokenEntity::getUserId)
-        .orElseThrow(() -> new EntityNotFoundException("RefreshTokenEntity not found"));
-  }
+  public String findById(String userId) {
+    String refreshToken = String.valueOf(valueOperations.get(userId));
 
-  public void deleteTokenByUserId(Long userId) {
-    refreshTokenJpaRepository.deleteByUserId(userId);
-  }
+    if (userId == null) {
+      return null;
+    }
 
-  public void deleteToken(String refreshToken) {
-    refreshTokenJpaRepository.deleteByToken(refreshToken);
+    return refreshToken;
   }
-
 }
