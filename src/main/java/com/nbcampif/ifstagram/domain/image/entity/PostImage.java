@@ -3,6 +3,7 @@ package com.nbcampif.ifstagram.domain.image.entity;
 import com.nbcampif.ifstagram.domain.post.entity.Post;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -34,7 +35,7 @@ public class PostImage {
   @Column(name = "file_path")
   private String filePath;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "post_id", nullable = false)
   public Post post;
 

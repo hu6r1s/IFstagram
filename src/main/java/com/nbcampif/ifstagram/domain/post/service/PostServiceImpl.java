@@ -10,6 +10,7 @@ import com.nbcampif.ifstagram.domain.post.repository.PostRepository;
 import com.nbcampif.ifstagram.domain.post.repository.PostRepositoryQuery;
 import com.nbcampif.ifstagram.domain.user.model.User;
 import com.nbcampif.ifstagram.domain.user.repository.FollowRepository;
+import com.querydsl.core.Tuple;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.List;
@@ -58,16 +59,11 @@ public class PostServiceImpl implements PostService{
   @Override
   public List<PostResponseDto> getCondPostList(String title, int page, int size, String sortBy) {
     Pageable pageable = PageRequest.of(page-1, size, Sort.by(sortBy).descending());
-    return postRepositoryQuery.getCondPostList(title, pageable).getContent().stream().map(post -> {
-      String imageUrl;
-      try {
-        imageUrl = postImageService.getImage(post.getId());
-      } catch (MalformedURLException e) {
-        throw new RuntimeException(e);
-      }
-      return new PostResponseDto(post, imageUrl);
-    })
-    .toList();
+    Page<Tuple> tuplePage = postRepositoryQuery.getCondPostImageList(title, pageable);
+    return tuplePage.getContent().stream()
+      .map(tuple -> new PostResponseDto(
+        tuple.get(0, Post.class), tuple.get(1, String.class)
+      )).toList();
   }
 
   @Override
