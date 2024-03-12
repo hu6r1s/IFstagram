@@ -4,6 +4,7 @@ import com.nbcampif.ifstagram.domain.comment.dto.CommentRequestDto;
 import com.nbcampif.ifstagram.domain.comment.dto.CommentResponseDto;
 import com.nbcampif.ifstagram.domain.comment.entity.Comment;
 import com.nbcampif.ifstagram.domain.comment.repository.CommentRepository;
+import com.nbcampif.ifstagram.domain.comment.repository.CommentRepositoryQuery;
 import com.nbcampif.ifstagram.domain.post.service.PostService;
 import com.nbcampif.ifstagram.domain.user.model.User;
 import java.util.List;
@@ -18,6 +19,7 @@ public class CommentServiceImpl implements CommentService {
 
   private final CommentRepository commentRepository;
   private final PostService postService;
+  private final CommentRepositoryQuery commentRepositoryQuery;
 
   @Override
   @Transactional
@@ -39,9 +41,7 @@ public class CommentServiceImpl implements CommentService {
 
   @Override
   public List<CommentResponseDto> getComment(Long postId) {
-    postService.findPost(postId);
-    List<Comment> comments = commentRepository.findAllByPostId(postId);
-
+    List<Comment> comments = commentRepositoryQuery.getComments(postId);
     return comments.stream().map(CommentResponseDto::new).toList();
   }
 
