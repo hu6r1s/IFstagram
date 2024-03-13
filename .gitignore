@@ -42,6 +42,9 @@ out/
 ### OAuth2 ###
 /**/src/main/resources/application-oauth2.yml
 
+### AWS ###
+/**/src/main/resources/application-aws.yml
+
 ### JWT ###
 /**/src/main/resources/jwt.properties
 
