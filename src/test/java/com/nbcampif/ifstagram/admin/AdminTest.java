@@ -25,6 +25,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class AdminTest {
@@ -177,8 +179,13 @@ public class AdminTest {
     headers.set(HttpHeaders.COOKIE, token);
 
     String baseUrl = "http://localhost:" + port + "/api/v1/admin/posts/deleted";
+    UriComponents url = UriComponentsBuilder.fromHttpUrl(baseUrl)
+      .queryParam("page", 1)
+      .queryParam("size", 10)
+      .queryParam("sortBy", "id")
+      .build(true);
 
-    ResponseEntity<CommonResponse> responseEntity = restTemplate.exchange(baseUrl, HttpMethod.GET, new HttpEntity<>(null, headers), CommonResponse.class);
+    ResponseEntity<CommonResponse> responseEntity = restTemplate.exchange(url.toString(), HttpMethod.GET, new HttpEntity<>(null, headers), CommonResponse.class);
 
     assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     assertEquals("삭제된 게시글 조회", responseEntity.getBody().getMessage());

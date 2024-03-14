@@ -4,6 +4,7 @@ spring:
       - test
     include:
       - oauth2
+      - aws
   config:
     import:
       - admin.properties
