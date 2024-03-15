@@ -80,6 +80,8 @@ https://www.notion.so/teamsparta/76f44485835b4ffaa408fc3584caf70b?v=b9cd5890b50c
 *****************
 - [x] 이전 코드 수정사항 적용
 - [x] queryDSL 적용
-- [ ] 이미지 업로드 S3 활용
-- [ ] Refresh Token Redis 사용
+- [x] 이미지 업로드 S3 활용
+- [x] Refresh Token Redis 사용
+- [x] Spring AOP 활용 - 좋아요 및 팔로우를 가장 많이 사용한 유저 로그
+- [x] Service 구현체와 인터페이스 분리
 - [ ] CD 자동 배포 적용 - 이틀 동안 시도했는데 실패..
