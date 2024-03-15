@@ -1,12 +1,12 @@
 cloud:
   aws:
     s3:
-      bucket: ${bucket}
+      bucket: test-bucket
     credentials:
-      access-key: ${access-key}
-      secret-key: ${secret-key}
+      access-key: test
+      secret-key: test
     region:
-      static: ${region}
+      static: test
       auto: false
     stack:
       auto: false

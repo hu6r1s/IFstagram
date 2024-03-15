@@ -29,7 +29,7 @@ import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class AdminTest {
+public class AdminIntegrationTest {
 
   @Autowired
   private TestRestTemplate restTemplate;
@@ -191,4 +191,16 @@ public class AdminTest {
     assertEquals("삭제된 게시글 조회", responseEntity.getBody().getMessage());
   }
 
+  @Test
+  void like_follow_event() {
+    HttpHeaders headers = new HttpHeaders();
+    headers.set(HttpHeaders.COOKIE, token);
+
+    String baseUrl = "http://localhost:" + port + "/api/v1/admin/event";
+
+    ResponseEntity<CommonResponse> responseEntity = restTemplate.exchange(baseUrl, HttpMethod.GET, new HttpEntity<>(null, headers), CommonResponse.class);
+
+    assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+    assertEquals("이벤트 조회", responseEntity.getBody().getMessage());
+  }
 }

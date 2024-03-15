@@ -31,7 +31,6 @@ dependencies {
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'com.mysql:mysql-connector-j'
     annotationProcessor 'org.projectlombok:lombok'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
     // jjwt
     implementation 'io.jsonwebtoken:jjwt-api:0.12.5'
@@ -59,6 +58,10 @@ dependencies {
 
     // S3
     implementation 'io.awspring.cloud:spring-cloud-aws-s3:3.1.0'
+
+    // Test
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
 }
 
 tasks.named('test') {
